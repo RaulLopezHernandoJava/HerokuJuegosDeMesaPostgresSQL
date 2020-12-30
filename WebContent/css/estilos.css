@@ -1,0 +1,26 @@
+@import "compass/css3";
+
+@import url(https://fonts.googleapis.com/css?family=Raleway);
+/*Contenedor cards*/
+
+
+.card-container{
+	display:flex;
+}
+
+
+/*Estilos para cards*/
+
+.tarjeta-juego{
+	margin-top:2em;
+	display:flex;
+	justify-content:space-between;
+	flex-wrap:wrap;
+}
+
+
+/*Footer*/
+
+footer .pie_pagina{
+	display:flex;
+}
