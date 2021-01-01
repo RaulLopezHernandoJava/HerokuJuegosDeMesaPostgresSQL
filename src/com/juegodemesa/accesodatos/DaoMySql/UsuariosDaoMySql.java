@@ -47,7 +47,7 @@ public class UsuariosDaoMySql implements DaoUsuario {
 
 	private static final String SQL_SELECT = "SELECT * FROM usuarios u JOIN roles r ON u.id_rol = r.id";
 	private static final String SQL_SELECT_ID = "SELECT * FROM usuarios j JOIN roles r ON u.id_rol = r.id WHERE u.id = ?";
-	private static final String SQL_SELECT_USER = "SELECT * FROM usuarios u JOIN roles r ON u.id = r.id WHERE u.email = ?";
+	private static final String SQL_SELECT_USER = "SELECT u.id uid,u.nombre unombre,u.apellidos uapellidos,u.email uemail,u.password upassword, u.edad uedad, u.fecha_registro ufecharegistro, r.id rid, r.nombre rnombre, r.descripcion rdescripcion FROM juegos_bdd.usuarios u JOIN juegos_bdd.roles r ON u.id = r.id WHERE u.email = ?";
 	private static final String SQL_SELECT_PASSWORD = "SELECT u.password FROM usuarios u WHERE u.email = ?";
 	private static final String SQL_INSERT = "INSERT INTO usuarios (nombre, apellidos, email, id_rol , password,  edad , fecha_registro ) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	private static final String SQL_UPDATE = "UPDATE usuarios SET nombre = ?, apellidos = ?, email= ? , id_rol = ? , edad = ? , fechaRegistro = ? WHERE id = ?";
@@ -60,15 +60,15 @@ public class UsuariosDaoMySql implements DaoUsuario {
 	// "INSERT INTO peliculas (titulo, genero, fecha_estreno) VALUES ('asdf',
 	// 'asdf', '2000-1-1'); DROP TABLE peliculas; --');"
 
-	static {
-		try {
-			// Registramos el driver de MySQL de forma EXPLÍCITA ya que en las aplicaciones
-			// web lo necesitan todavía
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			throw new AccesoDatosException("No se ha podido cargar el driver de MySQL", e);
-		}
-	}
+	// static {
+	// 	try {
+	// 		// Registramos el driver de MySQL de forma EXPLÍCITA ya que en las aplicaciones
+	// 		// web lo necesitan todavía
+	// 		Class.forName("com.mysql.cj.jdbc.Driver");
+	// 	} catch (ClassNotFoundException e) {
+	// 		throw new AccesoDatosException("No se ha podido cargar el driver de MySQL", e);
+	// 	}
+	// }
 
 	// OBTENER TODOS LOS JUEGOS
 	
@@ -228,9 +228,9 @@ public class UsuariosDaoMySql implements DaoUsuario {
 				Rol rol = null;
 
 				if (rs.next()) {
-					rol= new Rol(rs.getLong("r.id"), rs.getString("r.nombre"),rs.getString("r.descripcion"));
-					usuario = new Usuario (rs.getLong("u.id"), rs.getString("u.nombre"), rs.getString("u.apellidos"),rs.getString("u.email"),rs.getString("u.password"),
-							rol,rs.getInt("u.edad"),rs.getDate("u.fecha_registro").toLocalDate());
+					rol= new Rol(rs.getLong("rid"), rs.getString("rnombre"),rs.getString("rdescripcion"));
+					usuario = new Usuario (rs.getLong("uid"), rs.getString("unombre"), rs.getString("uapellidos"),rs.getString("uemail"),rs.getString("upassword"),
+							rol,rs.getInt("uedad"),rs.getDate("ufecharegistro").toLocalDate());
 				}
 				
 				System.out.println(usuario);

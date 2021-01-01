@@ -46,7 +46,7 @@ public class JuegosDaoMySql implements Dao<Juego> {
 	// characterEncoding=UTF-8 cambia la codificación de los PreparedStatement de
 	// Windows-1252 a UTF-8
 
-	private static final String SQL_SELECT = "SELECT * FROM juegos j JOIN mecanicas m ON j.id_mecanica = m.id WHERE j.active = TRUE";
+	private static final String SQL_SELECT = "SELECT j.id jid, j.nombre jnombre, j.autor jautor, j.editorial jeditorial, j.precio jprecio, j.fecha_publicacion jfecha_publicacion, j.active jactive,m.id mid,m.nombre mnombre, m.descripcion mdescripcion FROM juegos_bdd.juegos j JOIN juegos_bdd.mecanicas m ON j.id_mecanica = m.id WHERE j.active = TRUE";
 	private static final String SQL_SELECT_ID = "SELECT * FROM juegos j JOIN mecanicas m ON j.id_mecanica = m.id WHERE j.id = ? AND j.active=TRUE ";
 	private static final String SQL_SELECT_AUTOR = "SELECT * FROM juegos j JOIN mecanicas m ON j.id_mecanica = m.id WHERE j.autor = ? AND j.active=TRUE";
 	private static final String SQL_SELECT_EDITORIAL = "SELECT * FROM juegos j JOIN mecanicas m ON j.id_mecanica = m.id WHERE j.editorial = ? AND j.active=TRUE";
@@ -90,10 +90,10 @@ public class JuegosDaoMySql implements Dao<Juego> {
 			// Para convertir las filas de una tabla de la base de datos en objetos de una
 			// colección
 			while (rs.next()) {
-				mecanica = new Mecanica(rs.getLong("m.id"), rs.getString("m.nombre"), rs.getString("m.descripcion"));
-				juego = new Juego(rs.getLong("id"), rs.getString("nombre"), rs.getString("autor"),
-						rs.getString("editorial"), mecanica, rs.getDouble("precio"),
-						rs.getDate("fecha_publicacion").toLocalDate(), rs.getBoolean("active"));
+				mecanica = new Mecanica(rs.getLong("mid"), rs.getString("mnombre"), rs.getString("mdescripcion"));
+				juego = new Juego(rs.getLong("jid"), rs.getString("jnombre"), rs.getString("jautor"),
+						rs.getString("jeditorial"), mecanica, rs.getDouble("jprecio"),
+						rs.getDate("jfecha_publicacion").toLocalDate(), rs.getBoolean("jactive"));
 				juegos.add(juego);
 			}
 
