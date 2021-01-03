@@ -9,31 +9,38 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 
 import com.juegodemesa.accesodatos.AccesoDatosException;
 import com.juegodemesa.accesodatos.Daos.Dao;
 import com.juegodemesa.modelos.Juego;
 import com.juegodemesa.modelos.Mecanica;
 
+import org.apache.commons.dbcp2.*;
+
 public class JuegosDaoMySql implements Dao<Juego> {
 
 	private static final Logger LOGGER = Logger.getLogger(JuegosDaoMySql.class.getName());
 
-	private DataSource dataSource;
+	private BasicDataSource dataSource;
 
 	// SINGLETON
 	private JuegosDaoMySql() {
-		try {
+
+		String dbUrl = System.getenv("JDBC_DATABASE_URL");
+		String username = System.getenv("JDBC_DATABASE_USERNAME");
+		String password = System.getenv("JDBC_DATABASE_PASSWORD");
+
+		dataSource = new BasicDataSource();
+		dataSource.setUrl(dbUrl);
+		dataSource.setUsername(username);
+		dataSource.setPassword(password);
+		/* try {
 			InitialContext initCtx = new InitialContext();
 			Context envCtx = (Context) initCtx.lookup("java:comp/env");
 			dataSource = (DataSource) envCtx.lookup("jdbc/juegos");
 		} catch (NamingException e) {
 			throw new AccesoDatosException("No se ha encontrado el pool de conexiones", e);
-		}
+		} */
 	}
 
 	private static final JuegosDaoMySql INSTANCIA = new JuegosDaoMySql();
